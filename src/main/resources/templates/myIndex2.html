@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>first page</title>
+    <script>
+      function getClosePullRequests() {
+          const url = 'http://localhost:8080/list/pull-request/closed';
+          fetch(url)
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              let gitResponse = data;
+
+              let responseLen=gitResponse.length;
+
+              let list = document.getElementById("myresponse");
+              let arr = document.getElementById("arrPrint");
+
+              for(i=0;i<responseLen;i++){
+
+                   let item = document.createElement("li");
+
+                   let title = gitResponse[i]['title'];
+                   let createDate = gitResponse[i]['createDate'];
+                   let closedDate = gitResponse[i]['closedDate'];
+                   let userName = gitResponse[i]['userName'];
+                   let userImage = gitResponse[i]['userImage'];
+
+                   var pic = document.createElement("IMG");
+                      pic.setAttribute("src", userImage);
+                      pic.setAttribute("width", "40");
+                      pic.setAttribute("height", "40");
+                      pic.setAttribute("alt", "userImage");
+
+                   item.appendChild(document.createTextNode("Title: "+title));
+                   item.appendChild(document.createTextNode(" Create Date: "+createDate));
+                   item.appendChild(document.createTextNode(" Closed Date: "+closedDate));
+                   item.appendChild(document.createTextNode(" Username: "+userName));
+                   item.appendChild(pic);
+
+                   let tmpl = `<p> Title: ${title}</p>
+                                <p> CreateDate: ${createDate}</p>
+                                <p> ClosedDate: ${closedDate}</p>
+                                <p> UserName: ${userName}</p>
+                                <p> UserImage <img src="${userImage}" alt="userImage" width="40" height="40"></p>
+                                <p>___________</p>`;
+                  document.getElementById("my").innerHTML += tmpl;
+<!--                   list.appendChild(item);-->
+
+                   let subarr = [{title: title}, {createDate: createDate}, {closedDate: closedDate}, {userName: userName}, {userImage: pic}];
+                   arr.appendChild(document.createTextNode(JSON.stringify(subarr, null, 2)));
+
+
+
+              }
+          });
+       }
+    </script>
+</head>
+<body onload="getClosePullRequests()">
+<p>
+    List of Closed PRs : <span id = "myresponse"></span>
+    <pre id="arrPrint"></pre>
+
+<pre id="my"></pre>
+</p>
+</body>
+</html>

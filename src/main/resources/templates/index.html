@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <script>
+      function getClosePullRequests() {
+
+            const url = 'http://localhost:8080/list/pull-request/closed';
+
+            fetch(url)
+                .then((response) => {
+                    if(!response.ok){throw new Error(`HTTP error! Status: ${response.status}`);}
+                    return response.json();
+                })
+                .then((data) => {
+                    let gitResponse = data;
+
+                    let responseLen=gitResponse.length;
+
+                    for(i=0;i<responseLen;i++){
+
+                        let item = document.createElement("li");
+
+                        let title = gitResponse[i]['title'];
+                        let createDate = gitResponse[i]['createDate'];
+                        let closedDate = gitResponse[i]['closedDate'];
+                        let userName = gitResponse[i]['userName'];
+                        let userImage = gitResponse[i]['userImage'];
+
+                        let tmpl = `<p> Title: ${title}<br> CreateDate: ${createDate}<br> ClosedDate: ${closedDate}<br> UserName: ${userName}<br> UserImage: <br> <img src="${userImage}" alt="userImage" width="40" height="40"><br> _____________________________</p>`;
+                        document.getElementById("responseList").innerHTML += tmpl;
+                    }
+                })
+                .catch((error)=>{
+                document.getElementById("errorResponse").innerHTML = error;
+                });
+    }
+    </script>
+</head>
+
+<body>
+<h3> List of All Closed Pull Requests :</h3>
+<button onclick="getClosePullRequests()">List of All Closed Pull Requests </button>
+<pre id="responseList"></pre>
+<span id="errorResponse"></span>
+</body>
+
+</html>

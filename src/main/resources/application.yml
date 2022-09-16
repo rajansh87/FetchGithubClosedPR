@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+
+git:
+  token: 
+  url: https://api.github.com/repos/rajansh87/Data-Structures-and-Algorithms-Implementations
+#  url: https://api.github.com/repos/rajansh87/UNSW-IDS-Feature-Selection
